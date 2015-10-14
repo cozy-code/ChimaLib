@@ -24,5 +24,22 @@ namespace ChimaLibTest.Models
             var sortdef = new ChimaLib.Models.SortFieldDefinition<Article, string>(obj => obj.Title);
             Assert.AreEqual("Title", sortdef.SortKey);  //キーを抽出する関数からソートキー文字列生成
         }
+
+        [TestMethod]
+        public void NextSortKey_Test1()
+        {
+            var sortdef = new ChimaLib.Models.SortFieldDefinition<Article, string>(obj => obj.Title);
+            
+            var next=sortdef.GetNextSortKey("Title");
+            Assert.AreEqual("Title desc", next);    //昇順の次は降順
+
+            next = sortdef.GetNextSortKey("Title desc");
+            Assert.AreEqual("Title", next);         //降順の次は昇順
+
+            next = sortdef.GetNextSortKey("unknown");
+            Assert.AreEqual("Title", next);         //別のフィールドがソートキーの場合は昇順
+
+        }
+
     }
 }

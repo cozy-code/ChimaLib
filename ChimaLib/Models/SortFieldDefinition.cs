@@ -14,5 +14,14 @@ namespace ChimaLib.Models
         }
 
         public string SortKey{ get;  private set; }
+
+        private const string DESC_SUFFIX = " desc";
+        public string GetNextSortKey(string aCurrentSortKey) {
+            if (aCurrentSortKey == this.SortKey) {
+                return this.SortKey + DESC_SUFFIX;
+            }
+            return this.SortKey;
+            
+        }
     }
 }
