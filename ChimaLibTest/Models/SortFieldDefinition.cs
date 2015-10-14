@@ -22,7 +22,7 @@ namespace ChimaLibTest.Models
         public void SortKey_Test1()
         {
             var sortdef = new ChimaLib.Models.SortFieldDefinition<Article, string>(obj => obj.Title);
-            Assert.AreEqual("Title", sortdef.SortKey);
+            Assert.AreEqual("Title", sortdef.SortKey);  //キーを抽出する関数からソートキー文字列生成
         }
     }
 }
