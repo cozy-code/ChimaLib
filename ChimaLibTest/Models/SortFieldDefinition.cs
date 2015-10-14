@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace ChimaLibTest.Models
 {
@@ -38,6 +39,46 @@ namespace ChimaLibTest.Models
 
             next = sortdef.GetNextSortKey("unknown");
             Assert.AreEqual("Title", next);         //別のフィールドがソートキーの場合は昇順
+
+        }
+
+        [TestMethod]
+        public void AddOrderBy_Test1() {
+            var dummy_list = new Article[] {
+                new Article() {Title="Z"},
+                new Article() {Title="A"},
+                new Article() {Title="M"}
+            };
+            var sortdef = new ChimaLib.Models.SortFieldDefinition<Article, string>(obj => obj.Title);
+
+            var articles = (from a in dummy_list select a).AsQueryable();
+
+            articles = sortdef.AddOrderBy(articles, "Title");  //ソートキー"Title"順に並べ替え
+            var result = articles.ToArray();
+
+            Assert.AreEqual("A", result[0].Title);
+            Assert.AreEqual("M", result[1].Title);
+            Assert.AreEqual("Z", result[2].Title);
+
+        }
+
+        [TestMethod]
+        public void AddOrderBy_Test2() {
+            var dummy_list = new Article[] {
+                new Article() {Title="Z"},
+                new Article() {Title="A"},
+                new Article() {Title="M"}
+            };
+            var sortdef = new ChimaLib.Models.SortFieldDefinition<Article, string>(obj => obj.Title);
+
+            var articles = (from a in dummy_list select a).AsQueryable();
+
+            articles = sortdef.AddOrderBy(articles, "Title desc");  //ソートキー"Title"順に並べ替え
+            var result = articles.ToArray();
+
+            Assert.AreEqual("Z", result[0].Title);
+            Assert.AreEqual("M", result[1].Title);
+            Assert.AreEqual("A", result[2].Title);
 
         }
 

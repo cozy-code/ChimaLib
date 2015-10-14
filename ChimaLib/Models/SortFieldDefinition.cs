@@ -9,10 +9,12 @@ namespace ChimaLib.Models
 {
     public class SortFieldDefinition<TModel, TKey>
     {
+        private Expression<Func<TModel, TKey>> KeySelector { get; set; }
+
         public SortFieldDefinition(Expression<Func<TModel, TKey>> aKeySelector){
             this.SortKey = ((MemberExpression)aKeySelector.Body).Member.Name;
+            this.KeySelector = aKeySelector;
         }
-
         public string SortKey{ get;  private set; }
 
         private const string DESC_SUFFIX = " desc";
@@ -22,6 +24,15 @@ namespace ChimaLib.Models
             }
             return this.SortKey;
             
+        }
+
+        public IQueryable<TModel> AddOrderBy(IQueryable<TModel> aQuery, string aCurrentSortKey) {
+            if (aCurrentSortKey == this.SortKey) {
+                return aQuery.OrderBy(this.KeySelector);
+            } else if(aCurrentSortKey == this.SortKey + DESC_SUFFIX) {
+                return aQuery.OrderByDescending(this.KeySelector);
+            }
+            return aQuery;
         }
     }
 }
