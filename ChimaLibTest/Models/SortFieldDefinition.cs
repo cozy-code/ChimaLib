@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
+using ChimaLib.Models;
+
 namespace ChimaLibTest.Models
 {
     /// <summary>
@@ -80,6 +82,14 @@ namespace ChimaLibTest.Models
             Assert.AreEqual("M", result[1].Title);
             Assert.AreEqual("A", result[2].Title);
 
+        }
+
+        [TestMethod]
+        public void SortDef_New_Test1() {
+            Article article=null;
+            //理想的には Article.DefineSort(obj => obj.Title); みたいに書きたいけど無理っぽい。
+            var sortdef = article.DefineSort(obj => obj.Title);
+            Assert.AreEqual("Title", sortdef.SortKey);  //キーを抽出する関数からソートキー文字列生成
         }
 
     }
