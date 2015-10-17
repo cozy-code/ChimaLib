@@ -9,7 +9,7 @@ namespace ChimaLib.Models
 {
     public static class SortFieldDefinitionExtention
     {
-        public static SortFieldDefinition<TModel,TKey> DefineSort<TModel, TKey>(this TModel aModel, Expression<Func<TModel, TKey>> aKeySelector) {
+        public static ISortFieldDefinition<TModel> DefineSort<TModel, TKey>(this TModel aModel, Expression<Func<TModel, TKey>> aKeySelector) {
             return new SortFieldDefinition<TModel, TKey>(aKeySelector);
         }
     }

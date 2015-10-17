@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChimaLib.Models
 {
-    public class SortFieldDefinition<TModel, TKey>
+    public class SortFieldDefinition<TModel, TKey> : ISortFieldDefinition<TModel>
     {
         private Expression<Func<TModel, TKey>> KeySelector { get; set; }
 
