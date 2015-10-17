@@ -92,5 +92,12 @@ namespace ChimaLibTest.Models
             Assert.AreEqual("Title", sortdef.SortKey);  //キーを抽出する関数からソートキー文字列生成
         }
 
+        [TestMethod]
+        public void SortDefInterface_New_Test1() {
+            Article article = null;
+            ISortFieldDefinition<Article> sortdef = article.DefineSort(obj => obj.Title);
+            Assert.AreEqual("Title", sortdef.SortKey);
+        }
+
     }
 }
