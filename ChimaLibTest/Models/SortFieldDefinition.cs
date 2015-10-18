@@ -158,5 +158,26 @@ namespace ChimaLibTest.Models
             }
         }
 
+        [TestMethod]
+        public void SortDefinition_Test1() {
+            var data = this.TestData1(10);
+            Article article = null;
+            SortDefinition<Article> sort_def = new SortDefinition<Article>() {
+                Fields=new[]{   //ソート列定義
+                    article.DefineSort(a=>a.Title),
+                    article.DefineSort(a=>a.Viewcount),
+                    article.DefineSort(a=>a.Published)
+                },
+                SortKey = "Title"   //ソート対象
+            };
+            data= sort_def.AddOrderBy(data); //かつてループだったところ
+
+            var result = data.ToArray();
+            for (var i = 0; i < 10; i++) {
+                Assert.AreEqual(i, result[i].Viewcount);
+            }
+        }
+
+
     }
 }
