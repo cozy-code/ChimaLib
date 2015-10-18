@@ -99,5 +99,64 @@ namespace ChimaLibTest.Models
             Assert.AreEqual("Title", sortdef.SortKey);
         }
 
+        /// <summary>
+        /// create dummy data
+        /// </summary>
+        /// <param name="num">num of data. must be an even number.</param>
+        /// <returns></returns>
+        private IQueryable<Article> TestData1(int num) {
+            Article[] data = new Article[num];
+            for(var i = 0; i < num; i++) {
+                /* mixed index. if num=10 then 0,9,2,7,4,5,6,3,8,1 */
+                var idx = (i % 2 == 0) ? i: num - i;
+                System.Diagnostics.Debug.WriteLine(idx);
+                data[i] = new Article() {
+                    Title = "Title" + idx.ToString(),
+                    Category = "Category" + idx.ToString(),
+                    Published = new DateTime(2015, 10, idx+1),
+                    Viewcount = idx
+                };
+            }
+            return data.AsQueryable();
+        }
+
+        [TestMethod]
+        public void MultiSortField_Asc_Test1() {
+            var data = this.TestData1(10);
+            Article article = null;
+            ISortFieldDefinition<Article>[] sort_fields = new[] {   //ソート列定義
+                article.DefineSort(a=>a.Title),
+                article.DefineSort(a=>a.Viewcount),
+                article.DefineSort(a=>a.Published),
+            };
+
+            foreach (var field in sort_fields) { //ソート適用
+                data = field.AddOrderBy(data, "Title");
+            }
+            var result = data.ToArray();
+            for(var i = 0; i < 10; i++) {
+                Assert.AreEqual(i, result[i].Viewcount);
+            }
+        }
+
+        [TestMethod]
+        public void MultiSortField_Desc_Test1() {
+            var data = this.TestData1(10);
+            Article article = null;
+            ISortFieldDefinition<Article>[] sort_fields = new[] {   //ソート列定義
+                article.DefineSort(a=>a.Title),
+                article.DefineSort(a=>a.Viewcount),
+                article.DefineSort(a=>a.Published),
+            };
+
+            foreach (var field in sort_fields) { //ソート適用
+                data = field.AddOrderBy(data, "Title desc");
+            }
+            var result = data.ToArray();
+            for (var i = 0; i < 10; i++) {
+                Assert.AreEqual(9-i, result[i].Viewcount);
+            }
+        }
+
     }
 }
