@@ -178,6 +178,27 @@ namespace ChimaLibTest.Models
             }
         }
 
+        [TestMethod]
+        public void SortDefinition_GetNextSortKey_Test1() {
+            var data = this.TestData1(10);
+            Article article = null;
+            SortDefinition<Article> sort_def = new SortDefinition<Article>() {
+                Fields = new[]{   //ソート列定義
+                    article.DefineSort(a=>a.Title),
+                    article.DefineSort(a=>a.Viewcount),
+                    article.DefineSort(a=>a.Published)
+                },
+                SortKey = "Title"   //ソート対象
+            };
+            
+            var keyforlink= sort_def.GetNextSortKey(a=>a.Title);
+            Assert.AreEqual("Title desc", keyforlink);
+
+            keyforlink = sort_def.GetNextSortKey(a => a.Viewcount);
+            Assert.AreEqual("Viewcount", keyforlink);
+
+        }
+
 
     }
 }

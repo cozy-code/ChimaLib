@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Models\ISortFieldDefinition.cs" />
     <Compile Include="Models\SortDefinition.cs" />
+    <Compile Include="Models\SortDefinitionExtention.cs" />
     <Compile Include="Models\SortFieldDefinition.cs" />
     <Compile Include="Models\SortFieldDefinitionExtention.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
